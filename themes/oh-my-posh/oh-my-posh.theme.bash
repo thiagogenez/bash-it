@@ -5,11 +5,13 @@ if _command_exists oh-my-posh; then
     
     # if cat command is an alias using pygmentize, oh-my-posh will crash
     # because the time cat from a file will contains hidden colour characteres
+    # https://github.com/JanDeDobbeleer/oh-my-posh/blob/3a15594410656d7f96d5d57501ea49e9dd8342df/src/shell/scripts/omp.bash#L24
+    # for the use of original cat
     cat_command="cat"
-    if alias cat 2>/dev/null; then 
-        if command -v /usr/bin/cat; then
+    if [ "$(alias $cat_command > /dev/null 2>&1)$?" -eq 0 ]; then 
+        if [ -x "$(command -v /usr/bin/cat)" ]; then
             cat_command="\/usr\/bin\/cat"
-        elif command -v /bin/cat; then
+        elif [ -x "$(command -v /bin/cat)" ]; then
             cat_command="\/bin\/cat"
         fi
     fi
